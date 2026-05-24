@@ -1,0 +1,35 @@
+.clock {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  min-width: 80px;
+  text-align: center;
+  transition: color var(--transition-base), background-color var(--transition-base);
+}
+
+.active {
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-2);
+}
+
+.inactive {
+  color: var(--color-text-muted);
+  background-color: transparent;
+}
+
+.low {
+  color: var(--color-warning);
+}
+
+.critical {
+  color: #e05555;
+  animation: pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}

@@ -249,6 +249,74 @@ jupyter notebook
 ```
 
 
+## Web UI (`ui/`)
+
+This repository includes a React + TypeScript web interface for playing chess
+against the searchless transformer models. The UI is a standalone application
+located in the `ui/` directory.
+
+> **Note:** The UI currently uses **mocked game state** and is intended as the
+> first UI scaffold. Real AI provider integration (Gemini and offline engine)
+> is planned for a future update.
+
+### Features
+
+- Classic, timeless chess aesthetic (wood/ivory board, serif typography)
+- Rapid chess first — presets: 10+0, 10+5, 15+10, 25+10
+- Interactive chessboard with legal-move highlighting
+- Player cards with per-side clocks
+- Move list (algebraic notation)
+- Provider selection: Gemini default · your own API key · offline AI
+- API key management (stored locally in the browser)
+- Offline engine setup guide (placeholder for future integration)
+- Settings persisted to `localStorage`
+
+### Requirements
+
+- [Node.js](https://nodejs.org/) v18 or later
+- npm v9 or later (comes with Node.js)
+
+### Running the UI locally
+
+```bash
+cd ui
+npm install
+npm run dev
+```
+
+Then open <http://localhost:5173> in your browser.
+
+### Building for production
+
+```bash
+cd ui
+npm run build       # outputs to ui/dist/
+npm run preview     # serve the production build locally
+```
+
+### UI structure
+
+```
+ui/
+├── index.html
+├── package.json
+├── vite.config.ts
+└── src/
+    ├── App.tsx                  # Router + app shell
+    ├── main.tsx                 # Entry point
+    ├── pages/                   # Home · Play · Settings
+    ├── components/
+    │   ├── chess/               # ChessBoard
+    │   ├── game/                # PlayerCard · ClockDisplay · MoveList · …
+    │   ├── layout/              # AppShell · TopNav
+    │   └── setup/               # RapidPresetPicker · ProviderSelector · ApiKeyForm · …
+    ├── hooks/                   # useGameState · useClock · useLocalSettings
+    ├── lib/                     # Constants and storage utilities
+    ├── styles/                  # Design tokens and global CSS
+    └── types/                   # TypeScript interfaces
+```
+
+
 ## Citing this work
 
 ```latex
