@@ -49,6 +49,7 @@ We show that, although a remarkably good approximation of Stockfish’s search-b
 |   ├── constants.py                - Constants, interfaces, and types
 |   ├── data_loader.py              - Data loader
 |   ├── metrics_evaluator.py        - Metrics (e.g., Kendall's tau) evaluator
+|   ├── play_stockfish.py           - Play against Stockfish with configurable Elo
 |   ├── puzzles.py                  - Puzzle evaluation script
 |   ├── searchless_chess.ipynb      - Model analysis notebook
 |   ├── tokenizer.py                - Chess board tokenization
@@ -240,6 +241,22 @@ ResultSet-EloRating>ratings
 cd ..
 ```
 
+### Play Against Stockfish (Configurable Elo)
+
+You can play directly in the terminal against local Stockfish and set its Elo:
+
+```bash
+cd src
+python play_stockfish.py --elo=1800 --human_color=white --time_per_move=0.1
+cd ..
+```
+
+Flags:
+
+* `--elo`: target Stockfish Elo (commonly 1320-3190 depending on build)
+* `--human_color`: `white` or `black`
+* `--time_per_move`: think time in seconds per Stockfish move
+
 ### Analysis Notebook
 
 To investigate the model's behavior (e.g., to compute the win percentage for all legal moves), start a notebook server and then open `src/searchless_chess.ipynb` in your browser:
@@ -292,7 +309,17 @@ Then open <http://localhost:5173> in your browser.
 cd ui
 npm run build       # outputs to ui/dist/
 npm run preview     # serve the production build locally
+npm run screenshots # captures /, /play, /settings into ui/artifacts/screenshots/
 ```
+
+### CI assets + screenshots workflow
+
+The repository includes a GitHub Actions workflow at
+`.github/workflows/ui-assets.yml` that:
+
+1. builds the UI production assets (`ui/dist/`),
+2. captures screenshots of core routes (`/`, `/play`, `/settings`),
+3. uploads both as workflow artifacts (`ui-dist`, `ui-screenshots`).
 
 ### UI structure
 
