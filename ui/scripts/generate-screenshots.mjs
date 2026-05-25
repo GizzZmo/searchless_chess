@@ -15,9 +15,10 @@ async function ensureDistBuilt() {
 }
 
 function startPreviewServer() {
+  const viteBin = path.join(uiRoot, 'node_modules', 'vite', 'bin', 'vite.js');
   return spawn(
-    process.platform === 'win32' ? 'npx.cmd' : 'npx',
-    ['vite', 'preview', '--host', '127.0.0.1', '--port', '4173', '--strictPort'],
+    process.execPath,
+    [viteBin, 'preview', '--host', '127.0.0.1', '--port', '4173', '--strictPort'],
     {
       cwd: uiRoot,
       stdio: 'pipe',
@@ -71,7 +72,13 @@ async function main() {
     await waitForServer(preview);
     await captureScreenshots();
   } finally {
-    preview.kill('SIGTERM');
+    if (preview.exitCode === null) {
+      preview.kill('SIGTERM');
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (preview.exitCode === null) {
+        preview.kill('SIGKILL');
+      }
+    }
   }
 }
 
