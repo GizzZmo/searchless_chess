@@ -28,14 +28,18 @@ class StockfishEngine(engine.Engine):
   def __init__(
       self,
       limit: chess.engine.Limit,
+      elo_rating: int | None = None,
   ) -> None:
     self._limit = limit
     self._skill_level = None
+    self._elo_rating = None
     bin_path = os.path.join(
         os.getcwd(),
         '../Stockfish/src/stockfish',
     )
     self._raw_engine = chess.engine.SimpleEngine.popen_uci(bin_path)
+    if elo_rating is not None:
+      self.elo_rating = elo_rating
 
   def __del__(self) -> None:
     self._raw_engine.close()
@@ -52,6 +56,16 @@ class StockfishEngine(engine.Engine):
   def skill_level(self, skill_level: int) -> None:
     self._skill_level = skill_level
     self._raw_engine.configure({'Skill Level': self._skill_level})
+    self._raw_engine.configure({'UCI_LimitStrength': False})
+
+  @property
+  def elo_rating(self) -> int | None:
+    return self._elo_rating
+
+  @elo_rating.setter
+  def elo_rating(self, elo_rating: int) -> None:
+    self._elo_rating = elo_rating
+    self._raw_engine.configure({'UCI_LimitStrength': True, 'UCI_Elo': elo_rating})
 
   def analyse(self, board: chess.Board) -> engine.AnalysisResult:
     """Returns analysis results from stockfish."""
